@@ -1,0 +1,310 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── USERS ────────────────────────────────────────────────────────────────────
+
+model User {
+  id              String   @id @default(cuid())
+  email           String   @unique
+  name            String
+  avatar          String?
+  passwordHash    String?  // null for OAuth-only users
+  emailVerified   Boolean  @default(false)
+  xp              Int      @default(0)
+  streak          Int      @default(0)
+  lastSeen        DateTime @default(now())
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  profile            UserProfile?
+  progress           UserProgress[]
+  achievements       UserAchievement[]
+  submissions        CodeSubmission[]
+  sessions           Session[]
+  passwordResetTokens PasswordResetToken[]
+  emailVerifyTokens   EmailVerifyToken[]
+
+  @@index([email])
+  @@map("users")
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([token])
+  @@map("password_reset_tokens")
+}
+
+model EmailVerifyToken {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([token])
+  @@map("email_verify_tokens")
+}
+
+model UserProfile {
+  id                String  @id @default(cuid())
+  userId            String  @unique
+  bio               String?
+  country           String?
+  preferredLanguage String  @default("python")
+  locale            String  @default("en")
+  theme             String  @default("dark")
+  dailyGoalMinutes  Int     @default(30)
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_profiles")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([token])
+  @@map("sessions")
+}
+
+// ─── COURSES ──────────────────────────────────────────────────────────────────
+
+model Course {
+  id             String   @id @default(cuid())
+  slug           String   @unique
+  language       Language
+  titleEn        String
+  titleRu        String
+  descriptionEn  String
+  descriptionRu  String
+  level          Int      @default(0)  // 0=intro, 1=basic, 2=logic, 3=functions, 4=oop
+  order          Int      @default(0)
+  isPublished    Boolean  @default(false)
+  totalXP        Int      @default(0)
+  thumbnailUrl   String?
+  parentCourseId String?  // For specialization branches
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  chapters     Chapter[]
+  parentCourse Course?  @relation("CourseSpecializations", fields: [parentCourseId], references: [id])
+  branches     Course[] @relation("CourseSpecializations")
+
+  @@index([language, level])
+  @@index([slug])
+  @@map("courses")
+}
+
+model Chapter {
+  id        String   @id @default(cuid())
+  courseId  String
+  slug      String
+  titleEn   String
+  titleRu   String
+  order     Int
+  createdAt DateTime @default(now())
+
+  course  Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  lessons Lesson[]
+
+  @@unique([courseId, slug])
+  @@index([courseId, order])
+  @@map("chapters")
+}
+
+model Lesson {
+  id           String     @id @default(cuid())
+  chapterId    String
+  slug         String
+  type         LessonType
+  titleEn      String
+  titleRu      String
+  contentEn    String     @db.Text
+  contentRu    String     @db.Text
+  order        Int
+  xpReward     Int        @default(10)
+  isPublished  Boolean    @default(false)
+  estimatedMin Int        @default(5)
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  chapter    Chapter       @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  exercise   Exercise?
+  quizItems  QuizItem[]
+  progress   UserProgress[]
+  submissions CodeSubmission[]
+
+  @@unique([chapterId, slug])
+  @@index([chapterId, order])
+  @@map("lessons")
+}
+
+// ─── EXERCISES ────────────────────────────────────────────────────────────────
+
+model Exercise {
+  id              String   @id @default(cuid())
+  lessonId        String   @unique
+  instructionsEn  String   @db.Text
+  instructionsRu  String   @db.Text
+  starterCode     String   @db.Text
+  solutionCode    String   @db.Text
+  language        Language
+  testCases       Json     // Array of { input: string, expectedOutput: string, isHidden: boolean }
+  hints           Json     // Array of { order: number, textEn: string, textRu: string }
+  timeoutMs       Int      @default(5000)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  lesson Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@map("exercises")
+}
+
+model QuizItem {
+  id            String   @id @default(cuid())
+  lessonId      String
+  questionEn    String
+  questionRu    String
+  options       Json     // Array of { textEn: string, textRu: string, isCorrect: boolean }
+  explanation   String?
+  order         Int
+  createdAt     DateTime @default(now())
+
+  lesson Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@index([lessonId, order])
+  @@map("quiz_items")
+}
+
+// ─── PROGRESS ─────────────────────────────────────────────────────────────────
+
+model UserProgress {
+  id          String    @id @default(cuid())
+  userId      String
+  lessonId    String
+  completed   Boolean   @default(false)
+  attempts    Int       @default(0)
+  bestScore   Int       @default(0)  // 0-100
+  xpEarned    Int       @default(0)
+  completedAt DateTime?
+  startedAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, lessonId])
+  @@index([userId])
+  @@index([lessonId])
+  @@map("user_progress")
+}
+
+model CodeSubmission {
+  id         String           @id @default(cuid())
+  userId     String
+  lessonId   String
+  code       String           @db.Text
+  language   Language
+  status     SubmissionStatus
+  output     String?          @db.Text
+  error      String?          @db.Text
+  score      Int?             // 0-100, null if not an exercise
+  executedMs Int?             // Execution time in milliseconds
+  createdAt  DateTime         @default(now())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@index([userId, lessonId])
+  @@index([userId, createdAt])
+  @@map("code_submissions")
+}
+
+// ─── ACHIEVEMENTS ─────────────────────────────────────────────────────────────
+
+model Achievement {
+  id          String  @id @default(cuid())
+  slug        String  @unique
+  titleEn     String
+  titleRu     String
+  descEn      String
+  descRu      String
+  icon        String  // Emoji or icon name
+  xpReward    Int     @default(0)
+  rarity      String  @default("common") // common, rare, epic, legendary
+  condition   Json    // { type: string, value: number } — e.g. { type: "streak", value: 7 }
+
+  users UserAchievement[]
+
+  @@map("achievements")
+}
+
+model UserAchievement {
+  id            String   @id @default(cuid())
+  userId        String
+  achievementId String
+  earnedAt      DateTime @default(now())
+
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  achievement Achievement @relation(fields: [achievementId], references: [id])
+
+  @@unique([userId, achievementId])
+  @@map("user_achievements")
+}
+
+// ─── ENUMS ────────────────────────────────────────────────────────────────────
+
+enum Language {
+  python
+  javascript
+  typescript
+  go
+  java
+  cpp
+  sql
+  html
+  css
+
+  @@map("language")
+}
+
+enum LessonType {
+  theory
+  exercise
+  quiz
+
+  @@map("lesson_type")
+}
+
+enum SubmissionStatus {
+  pending
+  running
+  passed
+  failed
+  error
+  timeout
+
+  @@map("submission_status")
+}

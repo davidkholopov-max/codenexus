@@ -1,0 +1,22 @@
+{
+  "name": "database",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "migrate": "prisma migrate dev",
+    "migrate:prod": "prisma migrate deploy",
+    "seed": "ts-node --transpile-only --compiler-options '{\"module\":\"CommonJS\"}' seeds/index.ts",
+    "studio": "prisma studio",
+    "generate": "prisma generate",
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@prisma/client": "^5.13.0",
+    "prisma": "^5.13.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0",
+    "ts-node": "^10.9.0",
+    "@types/node": "^20.0.0"
+  }
+}

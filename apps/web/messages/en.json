@@ -1,0 +1,304 @@
+{
+  "common": {
+    "loading": "Loading...",
+    "error": "Something went wrong",
+    "retry": "Try again",
+    "save": "Save",
+    "cancel": "Cancel",
+    "continue": "Continue",
+    "back": "Back",
+    "next": "Next",
+    "finish": "Finish",
+    "submit": "Submit",
+    "close": "Close",
+    "edit": "Edit",
+    "delete": "Delete",
+    "search": "Search"
+  },
+  "nav": {
+    "home": "Home",
+    "courses": "Courses",
+    "learn": "Learn",
+    "playground": "Playground",
+    "dashboard": "Dashboard",
+    "profile": "Profile",
+    "settings": "Settings",
+    "leaderboard": "Leaderboard",
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "signOut": "Sign Out"
+  },
+  "home": {
+    "hero": {
+      "badge": "Free for everyone",
+      "title": "Learn to code,",
+      "titleHighlight": "the right way",
+      "subtitle": "From zero to professional developer. Interactive exercises, real code execution, and a clear learning path — in Russian and English.",
+      "cta": "Start Learning Free",
+      "ctaSecondary": "View Courses",
+      "stats": {
+        "learners": "learners",
+        "courses": "courses",
+        "exercises": "exercises"
+      }
+    },
+    "features": {
+      "title": "Everything you need to become a developer",
+      "interactive": {
+        "title": "Interactive Code Editor",
+        "description": "Write real code directly in the browser. Get instant feedback on every exercise."
+      },
+      "structured": {
+        "title": "Structured Learning Path",
+        "description": "From absolute basics to advanced topics. Clear levels, no gaps, no confusion."
+      },
+      "multilang": {
+        "title": "7 Programming Languages",
+        "description": "Python, JavaScript, Go, Java, C++, SQL, HTML/CSS — all in one place."
+      },
+      "progress": {
+        "title": "Track Your Progress",
+        "description": "XP points, streaks, achievements. Stay motivated with gamified learning."
+      },
+      "community": {
+        "title": "Russian & English",
+        "description": "Full platform support for both languages. Switch anytime, seamlessly."
+      },
+      "setup": {
+        "title": "Dev Environment Guides",
+        "description": "Step-by-step setup for VS Code, PyCharm, terminal — we've got you covered."
+      }
+    },
+    "languages": {
+      "title": "Choose your path",
+      "subtitle": "Start with any language. Switch anytime. Your progress is always saved.",
+      "python": {
+        "description": "Perfect first language. Readable, powerful, used in AI/ML, web, automation."
+      },
+      "javascript": {
+        "description": "The language of the web. Build websites, apps, servers — everything."
+      },
+      "go": {
+        "description": "Fast, simple, built for scale. Loved by backend engineers worldwide."
+      },
+      "java": {
+        "description": "Enterprise standard. Android, backend, big systems."
+      },
+      "cpp": {
+        "description": "Performance-first. Game development, systems programming, competitive coding."
+      },
+      "sql": {
+        "description": "Essential for every developer. Query databases, understand data."
+      },
+      "htmlcss": {
+        "description": "The foundation of the web. Every developer needs these."
+      }
+    },
+    "cta": {
+      "title": "Ready to start?",
+      "subtitle": "Join thousands of learners already on their coding journey.",
+      "button": "Get Started — It's Free"
+    }
+  },
+  "courses": {
+    "title": "All Courses",
+    "subtitle": "Structured paths from beginner to professional",
+    "levels": {
+      "0": "Introduction",
+      "1": "Basics",
+      "2": "Logic & Control",
+      "3": "Functions",
+      "4": "Advanced (OOP)"
+    },
+    "filter": {
+      "all": "All Languages",
+      "beginner": "Beginner",
+      "intermediate": "Intermediate",
+      "advanced": "Advanced"
+    },
+    "card": {
+      "lessons": "lessons",
+      "exercises": "exercises",
+      "startCourse": "Start Course",
+      "continueCourse": "Continue",
+      "completed": "Completed"
+    }
+  },
+  "learn": {
+    "theory": "Theory",
+    "exercise": "Exercise",
+    "quiz": "Quiz",
+    "runCode": "Run Code",
+    "resetCode": "Reset",
+    "showHint": "Show Hint",
+    "hint": "Hint",
+    "checkAnswer": "Check Answer",
+    "correct": "Correct! Well done!",
+    "incorrect": "Not quite right. Try again!",
+    "output": "Output",
+    "expectedOutput": "Expected",
+    "lessonComplete": "Lesson Complete!",
+    "xpEarned": "XP earned",
+    "nextLesson": "Next Lesson",
+    "prevLesson": "Previous",
+    "progress": "Progress",
+    "chapterComplete": "Chapter Complete!"
+  },
+  "editor": {
+    "title": "Code Playground",
+    "language": "Language",
+    "theme": "Theme",
+    "fontSize": "Font Size",
+    "run": "Run",
+    "clear": "Clear Output",
+    "copy": "Copy Code",
+    "share": "Share",
+    "running": "Running...",
+    "error": "Error",
+    "success": "Success"
+  },
+  "auth": {
+    "login": {
+      "title": "Welcome back",
+      "subtitle": "Sign in to continue your learning journey",
+      "email": "Email",
+      "password": "Password",
+      "forgotPassword": "Forgot password?",
+      "submit": "Sign In",
+      "noAccount": "Don't have an account?",
+      "signUp": "Sign up",
+      "orContinueWith": "Or continue with",
+      "github": "Continue with GitHub",
+      "google": "Continue with Google",
+      "invalidCredentials": "Invalid email or password"
+    },
+    "register": {
+      "title": "Create your account",
+      "subtitle": "Start your coding journey today — it's free",
+      "name": "Full Name",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "submit": "Create Account",
+      "hasAccount": "Already have an account?",
+      "signIn": "Sign in",
+      "terms": "By signing up, you agree to our Terms of Service and Privacy Policy.",
+      "orContinueWith": "Or continue with",
+      "successTitle": "Account created!",
+      "successGreeting": "Hey, {name}!",
+      "successDesc": "Your account has been created successfully. Let's do a quick setup — it takes less than a minute.",
+      "successEmail": "A confirmation email was sent to {email}",
+      "successCta": "Start setup →"
+    },
+    "forgotPassword": {
+      "title": "Forgot your password?",
+      "subtitle": "Enter your email and we'll send a reset link",
+      "email": "Email",
+      "submit": "Send Reset Link",
+      "backToLogin": "Back to login",
+      "sentTitle": "Check your inbox",
+      "sentDesc": "We sent a password reset link to {email}. Check your spam folder if you don't see it.",
+      "error": "Something went wrong. Please try again."
+    },
+    "resetPassword": {
+      "title": "Set new password",
+      "subtitle": "Enter a new password for your account",
+      "newPassword": "New Password",
+      "confirmPassword": "Confirm Password",
+      "submit": "Reset Password",
+      "successTitle": "Password updated!",
+      "successDesc": "Your password has been changed. Redirecting to login...",
+      "invalidTitle": "Invalid link",
+      "invalidDesc": "This password reset link is invalid or has expired.",
+      "requestNew": "Request a new link",
+      "error": "Something went wrong. Please try again.",
+      "invalidToken": "This link is invalid or has expired"
+    },
+    "verifyEmail": {
+      "pendingTitle": "Check your email",
+      "pendingDesc": "We sent a verification link to your email. Click it to activate your account.",
+      "successTitle": "Email verified!",
+      "successDesc": "Your email has been confirmed. You can now sign in.",
+      "goToLogin": "Go to Login",
+      "errorTitle": "Verification failed",
+      "errorExpired": "The verification link has expired. Please register again.",
+      "errorInvalid": "The verification link is invalid.",
+      "registerAgain": "Register again",
+      "resend": "Resend email",
+      "resendSent": "Email sent! Check your inbox.",
+      "resendCooldown": "Please wait 2 minutes before resending."
+    }
+  },
+  "dashboard": {
+    "greeting": "Welcome back, {name}!",
+    "todayStreak": "Day streak",
+    "totalXP": "Total XP",
+    "coursesCompleted": "Courses completed",
+    "currentCourse": "Continue Learning",
+    "recentActivity": "Recent Activity",
+    "achievements": "Achievements",
+    "noActivity": "No activity yet. Complete your first lesson!",
+    "weeklyGoal": "Weekly Goal",
+    "lessonsThisWeek": "lessons this week",
+    "subtitle": "Keep up the great work!",
+    "progress": "Progress",
+    "courseComplete": "Course complete!",
+    "noCourse": "You haven't started a course yet.",
+    "browseCourses": "Browse courses",
+    "noAchievements": "Complete lessons to earn achievements!",
+    "streakUnit": "d",
+    "justNow": "just now",
+    "minutesAgo": "{m}m ago",
+    "hoursAgo": "{h}h ago",
+    "yesterday": "yesterday",
+    "daysAgo": "{d}d ago"
+  },
+  "profile": {
+    "title": "Profile",
+    "editProfile": "Edit Profile",
+    "bio": "Bio",
+    "country": "Country",
+    "joinedDate": "Joined",
+    "stats": "Statistics",
+    "achievements": "Achievements",
+    "activity": "Activity"
+  },
+  "onboarding": {
+    "title": "Welcome to CodeNexus!",
+    "subtitle": "Let's set up your learning profile",
+    "step1": {
+      "title": "What do you want to build?",
+      "web": "Websites & Web Apps",
+      "mobile": "Mobile Apps",
+      "data": "Data & AI",
+      "backend": "Backend & APIs",
+      "automation": "Automation & Scripts",
+      "games": "Games"
+    },
+    "step2": {
+      "title": "Pick your first language",
+      "recommendation": "We recommend"
+    },
+    "step3": {
+      "title": "Set your daily goal",
+      "casual": "Casual (15 min/day)",
+      "regular": "Regular (30 min/day)",
+      "serious": "Serious (1 hour/day)",
+      "intense": "Intense (2+ hours/day)"
+    },
+    "finish": "Start Learning!"
+  },
+  "settings": {
+    "title": "Settings",
+    "appearance": "Appearance",
+    "theme": "Theme",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "themeSystem": "System",
+    "language": "Language",
+    "notifications": "Notifications",
+    "account": "Account",
+    "dangerZone": "Danger Zone",
+    "deleteAccount": "Delete Account"
+  }
+}

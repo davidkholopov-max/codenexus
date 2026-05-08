@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <!-- Background: rounded square, same color as bg-primary on the site -->
+  <rect width="32" height="32" rx="7" fill="#0DA2E7"/>
+  <!-- Code2 icon from lucide-react, scaled to fit (original 24x24 → centered in 32x32) -->
+  <g transform="translate(4, 4) scale(1)">
+    <line x1="18" y1="16" x2="22" y2="12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <line x1="22" y1="12" x2="18" y2="8" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <line x1="6" y1="8" x2="2" y2="12" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <line x1="2" y1="12" x2="6" y2="16" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <line x1="14.5" y1="4" x2="9.5" y2="20" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+</svg>
