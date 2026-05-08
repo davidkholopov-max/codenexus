@@ -1,7 +1,7 @@
 export const dynamic = 'force-dynamic'
 
 import { NextIntlClientProvider } from 'next-intl'
-import { getMessages, getTranslations } from 'next-intl/server'
+import { getMessages } from 'next-intl/server'
 import { notFound } from 'next/navigation'
 import { ThemeProvider } from '@/components/layout/ThemeProvider'
 import { Providers } from '@/lib/providers'
@@ -54,10 +54,6 @@ export async function generateMetadata({
       description,
     },
   }
-}
-
-export function generateStaticParams() {
-  return locales.map((locale) => ({ locale }))
 }
 
 export default async function LocaleLayout({
