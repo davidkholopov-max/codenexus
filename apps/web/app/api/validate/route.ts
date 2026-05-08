@@ -49,7 +49,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: 'Exercise not found' }, { status: 404 })
     }
 
-    const testCases = exercise.testCases as TestCase[]
+    const testCases = exercise.testCases as unknown as TestCase[]
     const results = []
     let passed = 0
     const start = Date.now()
