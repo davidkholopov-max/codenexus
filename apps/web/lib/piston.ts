@@ -1,13 +1,13 @@
 const PISTON_URL = process.env.PISTON_API_URL ?? 'https://emkc.org/api/v2/piston'
 
 // Map our language names → Piston runtime + version
-const PISTON_RUNTIMES: Record<string, { language: string; version: string }> = {
+const PISTON_RUNTIMES: Record<string, { language: string; version: string; filename?: string }> = {
   python:     { language: 'python',     version: '3.10.0' },
   javascript: { language: 'javascript', version: '18.15.0' },
   typescript: { language: 'typescript', version: '5.0.3' },
   go:         { language: 'go',         version: '1.16.2' },
-  java:       { language: 'java',       version: '15.0.2' },
-  cpp:        { language: 'c++',        version: '10.2.0' },
+  java:       { language: 'java',       version: '15.0.2',  filename: 'Main.java' },
+  cpp:        { language: 'c++',        version: '10.2.0',  filename: 'main.cpp' },
   sql:        { language: 'sqlite3',    version: '3.36.0' },
 }
 
@@ -39,7 +39,7 @@ export async function runCode(
       body: JSON.stringify({
         language: runtime.language,
         version: runtime.version,
-        files: [{ content: code }],
+        files: [{ name: runtime.filename ?? 'code', content: code }],
         stdin,
         run_timeout: timeoutMs,
       }),
@@ -51,6 +51,18 @@ export async function runCode(
     }
 
     const data = await res.json()
+
+    // If compilation failed, surface the compile error
+    if (data.compile && data.compile.code !== 0) {
+      return {
+        stdout: '',
+        stderr: data.compile.stderr ?? data.compile.output ?? 'Compilation failed',
+        output: data.compile.stderr ?? data.compile.output ?? 'Compilation failed',
+        exitCode: data.compile.code ?? 1,
+        timedOut: false,
+      }
+    }
+
     const run = data.run ?? data.compile ?? {}
 
     return {
