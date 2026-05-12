@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -23,16 +23,17 @@ export default function LoginPage() {
   const t = useTranslations('auth.login')
   const locale = useLocale()
   const router = useRouter()
-  const { data: session, status } = useSession()
+  const { status } = useSession()
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [oauthLoading, setOauthLoading] = useState<'github' | 'google' | null>(null)
   const [error, setError] = useState<string | null>(null)
 
-  if (status === 'authenticated') {
-    router.replace(`/${locale}/dashboard`)
-    return null
-  }
+  useEffect(() => {
+    if (status === 'authenticated') {
+      router.replace(`/${locale}/dashboard`)
+    }
+  }, [status, locale, router])
 
   const {
     register,

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useTranslations, useLocale } from 'next-intl'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
@@ -33,10 +33,11 @@ export default function RegisterPage() {
   const [error, setError] = useState<string | null>(null)
   const [registered, setRegistered] = useState<{ name: string; email: string } | null>(null)
 
-  if (status === 'authenticated') {
-    router.replace(`/${locale}/dashboard`)
-    return null
-  }
+  useEffect(() => {
+    if (status === 'authenticated') {
+      router.replace(`/${locale}/dashboard`)
+    }
+  }, [status, locale, router])
 
   const { register, handleSubmit, formState: { errors } } = useForm<RegisterForm>({
     resolver: zodResolver(registerSchema),
