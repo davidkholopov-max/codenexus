@@ -4,9 +4,12 @@ import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { ArrowRight } from 'lucide-react'
+import { useSession } from 'next-auth/react'
 
 export function CTASection({ locale }: { locale: string }) {
   const t = useTranslations('home.cta')
+  const { data: session } = useSession()
+  const ctaHref = session ? `/${locale}/dashboard` : `/${locale}/login`
 
   return (
     <section className="py-24">
@@ -25,7 +28,7 @@ export function CTASection({ locale }: { locale: string }) {
             <h2 className="text-4xl md:text-5xl font-bold">{t('title')}</h2>
             <p className="text-muted-foreground text-lg max-w-md mx-auto">{t('subtitle')}</p>
             <Link
-              href={`/${locale}/register`}
+              href={ctaHref}
               className="group inline-flex items-center gap-2 px-8 py-4 rounded-xl font-semibold text-lg bg-primary text-primary-foreground hover:bg-primary/90 transition-all hover:shadow-xl hover:shadow-primary/25"
             >
               {t('button')}

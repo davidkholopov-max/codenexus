@@ -8,7 +8,7 @@ import { Eye, EyeOff, Code2, Github, Loader2, Zap, CheckCircle2, Mail } from 'lu
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { signIn } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 import { cn } from '@/lib/utils'
 
 const registerSchema = z.object({
@@ -27,10 +27,16 @@ export default function RegisterPage() {
   const t = useTranslations('auth.register')
   const locale = useLocale()
   const router = useRouter()
+  const { status } = useSession()
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [registered, setRegistered] = useState<{ name: string; email: string } | null>(null)
+
+  if (status === 'authenticated') {
+    router.replace(`/${locale}/dashboard`)
+    return null
+  }
 
   const { register, handleSubmit, formState: { errors } } = useForm<RegisterForm>({
     resolver: zodResolver(registerSchema),

@@ -10,7 +10,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { cn } from '@/lib/utils'
-import { signIn } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 
 const loginSchema = z.object({
   email: z.string().email('Invalid email'),
@@ -23,10 +23,16 @@ export default function LoginPage() {
   const t = useTranslations('auth.login')
   const locale = useLocale()
   const router = useRouter()
+  const { data: session, status } = useSession()
   const [showPassword, setShowPassword] = useState(false)
   const [isLoading, setIsLoading] = useState(false)
   const [oauthLoading, setOauthLoading] = useState<'github' | 'google' | null>(null)
   const [error, setError] = useState<string | null>(null)
+
+  if (status === 'authenticated') {
+    router.replace(`/${locale}/dashboard`)
+    return null
+  }
 
   const {
     register,

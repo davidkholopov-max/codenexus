@@ -4,6 +4,7 @@ import { useTranslations } from 'next-intl'
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import { ArrowRight, Zap, Users, BookOpen, Code2 } from 'lucide-react'
+import { useSession } from 'next-auth/react'
 
 const CODE_PREVIEW = `# Your first Python program
 name = "World"
@@ -16,6 +17,8 @@ print(f"Sum: {total}")  # Output: Sum: 15`
 
 export function HeroSection({ locale }: { locale: string }) {
   const t = useTranslations('home.hero')
+  const { data: session } = useSession()
+  const ctaHref = session ? `/${locale}/dashboard` : `/${locale}/login`
 
   const stats = [
     { value: '50K+', label: t('stats.learners'), icon: Users },
@@ -68,7 +71,7 @@ export function HeroSection({ locale }: { locale: string }) {
             {/* CTAs */}
             <div className="flex flex-wrap gap-3">
               <Link
-                href={`/${locale}/register`}
+                href={ctaHref}
                 className="group flex items-center gap-2 px-6 py-3 rounded-xl font-semibold bg-primary text-primary-foreground hover:bg-primary/90 transition-all duration-200 hover:shadow-lg hover:shadow-primary/25 animate-pulse-glow"
               >
                 {t('cta')}
