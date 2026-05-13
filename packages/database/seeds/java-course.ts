@@ -9,13 +9,13 @@ export async function seedJavaCourse(db: PrismaClient) {
     create: {
       slug: 'java-fundamentals', language: 'java',
       titleEn: 'Java Fundamentals', titleRu: 'Основы Java',
-      descriptionEn: 'Master Java — the backbone of enterprise software, Android apps, and big data. Learn OOP, classes, and the JVM from scratch.',
-      descriptionRu: 'Освойте Java — основу корпоративного ПО, Android-приложений и больших данных. Изучите ООП, классы и JVM с нуля.',
-      level: 1, totalXP: 360, isPublished: true,
+      descriptionEn: 'Master Java — the backbone of enterprise software, Android apps, and big data.',
+      descriptionRu: 'Освойте Java — основу корпоративного ПО, Android-приложений и больших данных.',
+      level: 1, totalXP: 600, isPublished: true,
     },
   })
 
-  // ─── Chapter 1 ────────────────────────────────────────────────────────────
+  // ─── Chapter 1: Getting Started ──────────────────────────────────────────
   const ch1 = await db.chapter.upsert({
     where: { courseId_slug: { courseId: course.id, slug: 'java-getting-started' } },
     update: {},
@@ -25,15 +25,7 @@ export async function seedJavaCourse(db: PrismaClient) {
   await theory(db, ch1.id, 'what-is-java', 'What is Java?', 'Что такое Java?', 1, 10, `
 # What is Java?
 
-Java is a **statically typed, object-oriented** language released in 1995. Today maintained by Oracle.
-
-## "Write Once, Run Anywhere"
-
-Java compiles to **bytecode** that runs on the **JVM**. The same compiled code runs on Windows, Linux, macOS, Android.
-
-## Where Java Is Used
-
-- **Android apps** · **Enterprise software** (banking, insurance) · **Big Data** (Hadoop, Spark) · **Spring Boot** backends · **Minecraft**
+Java is a **statically typed, object-oriented** language. Used in Android, banking, Minecraft, and enterprise backends.
 
 ## Your First Program
 
@@ -47,98 +39,88 @@ public class Main {
 
 | Part | Meaning |
 |------|---------|
-| \`public class Main\` | Every Java program lives in a class |
-| \`public static void main\` | JVM calls this first |
-| \`System.out.println()\` | Print to console with newline |
+| \`public class Main\` | Every program lives in a class named Main |
+| \`public static void main(String[] args)\` | JVM starts here — always write it exactly like this |
+| \`System.out.println()\` | Print to console + newline |
+| \`;\` | Every statement ends with semicolon |
+| \`{}\` | Curly braces mark start and end of a block |
+
+## print vs println
+
+\`\`\`java
+System.out.println("Hello");  // prints + newline
+System.out.print("Hello");    // prints, NO newline
+\`\`\`
   `.trim(), `
 # Что такое Java?
 
-Java — один из самых распространённых языков в мире. На нём написаны банковские системы, Android-приложения, Minecraft. Говорят: если Python — это дружелюбный коллега, то Java — строгий, но очень надёжный.
+Java — один из самых востребованных языков мира. На нём написаны банковские системы, Android-приложения, Minecraft.
 
-## Написано однажды — запускается везде
+## Структура каждой Java-программы
 
-Главная идея Java: пишешь код один раз, запускаешь на любом устройстве. Java компилируется в **байт-код** который понимает **JVM** (Java Virtual Machine — виртуальная машина Java). JVM есть на Windows, Linux, macOS, Android — и везде код работает одинаково.
-
-## Где используется Java
-
-- **Android** — большинство Android-приложений написаны на Java или Kotlin (похож на Java)
-- **Банки и страховые компании** — системы где важна надёжность
-- **Minecraft** — написан на Java
-- **Big Data** — Hadoop, Apache Spark
-- **Бэкенды** — Spring Boot framework
-
-## Первая программа — разбираем каждую строку
-
-В Python вывести текст — одна строка:
-\`\`\`python
-print("Hello, Java!")
-\`\`\`
-
-В Java та же программа выглядит так:
 \`\`\`java
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello, Java!");
+        System.out.println("Привет, Java!");
     }
 }
 \`\`\`
 
-Объясняем по-человечески:
+Разбираем по частям:
 
-**\`public class Main\`** — в Java весь код живёт внутри "классов". Класс — это как контейнер или папка для кода. \`Main\` — имя класса (должно совпадать с именем файла). \`public\` означает "доступен всем".
+**\`public class Main\`** — в Java весь код живёт в "классах". \`Main\` — имя класса (совпадает с именем файла). Слово \`public\` = "виден для всех".
 
-**\`public static void main(String[] args)\`** — это специальная функция с которой Java начинает выполнение. Запомните её как магическую фразу — она всегда выглядит именно так:
-- \`public\` — доступна снаружи
-- \`static\` — принадлежит классу, не объекту
-- \`void\` — ничего не возвращает
-- \`main\` — именно это имя Java ищет при запуске
-- \`String[] args\` — аргументы командной строки (пока не важно)
+**\`public static void main(String[] args)\`** — это точка входа. JVM (виртуальная машина Java) запускает именно эту функцию. Запомните её как магическую фразу — пишется всегда одинаково.
 
-**\`System.out.println("Hello, Java!")\`** — вывод на экран. Читайте как: "System (компьютер) → out (канал вывода) → println (напечатать строку)". Точки разделяют уровни вложенности.
+**\`System.out.println("текст")\`** — вывод в консоль. Расшифровка: System (компьютер) → out (канал вывода) → println (напечатать строку и перейти на новую).
 
-**Точка с запятой \`;\`** — каждая инструкция в Java заканчивается \`;\`. Это обязательно!
+**\`;\`** — каждая инструкция заканчивается точкой с запятой. Обязательно!
 
-**Фигурные скобки \`{}\`** — обозначают начало и конец блока кода. Следите за парностью: каждая открывающая \`{\` должна иметь закрывающую \`}\`.
+**\`{ }\`** — фигурные скобки обозначают начало и конец блока. Следите: каждая \`{\` должна иметь пару \`}\`.
 
-## Java vs Python: главные отличия
+## println vs print
+
+\`\`\`java
+System.out.println("Привет");  // выводит + переходит на новую строку
+System.out.print("Привет");    // выводит БЕЗ новой строки
+\`\`\`
+
+## Java vs Python
 
 | | Python | Java |
 |--|--------|------|
-| Строгость | Мягкий | Строгий |
-| Типы | Не надо указывать | Нужно указывать |
-| Скобки | Отступы | Фигурные {} |
-| Скорость работы | Медленнее | Быстрее |
-| Где чаще | Данные, скрипты | Enterprise, Android |
+| Вывод | \`print("текст")\` | \`System.out.println("текст")\` |
+| Блоки кода | Отступы | Фигурные скобки \`{}\` |
+| Конец строки | Ничего | Точка с запятой \`;\` |
+| Типы переменных | Сам угадывает | Нужно указывать |
   `.trim())
 
   await exercise(db, ch1.id, {
     slug: 'java-hello', order: 2, xpReward: 20,
     titleEn: 'Hello, Java!', titleRu: 'Привет, Java!',
-    contentEn: '# Hello, Java!\n\nWrite a Java program that prints **Hello, Java!** The class must be named **Main**.',
+    contentEn: `# Hello, Java!
+
+Write a complete Java program that prints exactly: **Hello, Java!**
+
+You need to write everything from scratch: the class declaration, the main method, and the print statement.
+
+Remember:
+- Class must be named \`Main\`
+- The main method signature is always: \`public static void main(String[] args)\`
+- Use \`System.out.println()\` to print`,
     contentRu: `# Привет, Java!
 
-Напишите программу которая выводит **Hello, Java!** на экран.
+Напишите программу с нуля которая выводит: **Hello, Java!**
 
-Структура класса уже готова — вам нужно добавить одну строку внутри \`main()\`.
+Вам нужно написать всё самостоятельно: объявление класса, метод main и вывод на экран.
 
-В Python это было бы:
-\`\`\`python
-print("Hello, Java!")
-\`\`\`
-
-В Java вывод через \`System.out.println\`:
-\`\`\`java
-System.out.println("Hello, Java!");
-\`\`\`
-
-Добавьте эту строку вместо комментария. Не забудьте точку с запятой в конце!`,
-    instructionsEn: 'Print "Hello, Java!" using System.out.println()',
-    instructionsRu: 'Выведите "Hello, Java!" с помощью System.out.println()',
-    starterCode: `public class Main {
-    public static void main(String[] args) {
-        // Напишите здесь: System.out.println("Hello, Java!");
-    }
-}`,
+Помните:
+- Класс должен называться \`Main\`
+- Сигнатура метода: \`public static void main(String[] args)\`
+- Для вывода используйте \`System.out.println()\``,
+    instructionsEn: 'Print "Hello, Java!" — write the full program from scratch',
+    instructionsRu: 'Выведите "Hello, Java!" — напишите программу с нуля',
+    starterCode: ``,
     solutionCode: `public class Main {
     public static void main(String[] args) {
         System.out.println("Hello, Java!");
@@ -146,12 +128,97 @@ System.out.println("Hello, Java!");
 }`,
     testCases: [{ input: '', expectedOutput: 'Hello, Java!', isHidden: false }],
     hints: [
-      { order: 1, textEn: 'Use System.out.println() to print text', textRu: 'Напишите точно: System.out.println("Hello, Java!"); — заглавные S, o, p важны!' },
-      { order: 2, textEn: 'System.out.println("Hello, Java!") prints the string with a newline', textRu: 'Не забудьте точку с запятой ; в конце строки — в Java это обязательно' },
+      { order: 1, textEn: 'Start by declaring the class. Type: public class Main {', textRu: 'Начните с объявления класса. Напишите: public class Main {' },
+      { order: 2, textEn: 'Inside the class, add the main method: public static void main(String[] args) {', textRu: 'Внутри класса добавьте метод: public static void main(String[] args) {' },
+      { order: 3, textEn: 'Inside main, print: System.out.println("Hello, Java!"); — don\'t forget the semicolon!', textRu: 'Внутри main напишите: System.out.println("Hello, Java!"); — не забудьте точку с запятой!' },
+      { order: 4, textEn: 'Close both blocks with two closing braces: } }', textRu: 'Закройте оба блока двумя фигурными скобками: } }' },
     ],
   })
 
-  // ─── Chapter 2 ────────────────────────────────────────────────────────────
+  await exercise(db, ch1.id, {
+    slug: 'java-multiline', order: 3, xpReward: 20,
+    titleEn: 'Multiple Lines', titleRu: 'Несколько строк',
+    contentEn: `# Multiple Lines
+
+Write a Java program that prints three lines:
+\`\`\`
+Java is awesome
+I am learning Java
+Line by line
+\`\`\`
+
+Each \`println\` call prints one line and moves to the next.`,
+    contentRu: `# Несколько строк
+
+Напишите программу которая выводит три строки:
+\`\`\`
+Java is awesome
+I am learning Java
+Line by line
+\`\`\`
+
+Каждый вызов \`println\` выводит одну строку и переходит на следующую.`,
+    instructionsEn: 'Print three lines: "Java is awesome", "I am learning Java", "Line by line"',
+    instructionsRu: 'Выведите три строки: "Java is awesome", "I am learning Java", "Line by line"',
+    starterCode: ``,
+    solutionCode: `public class Main {
+    public static void main(String[] args) {
+        System.out.println("Java is awesome");
+        System.out.println("I am learning Java");
+        System.out.println("Line by line");
+    }
+}`,
+    testCases: [{ input: '', expectedOutput: 'Java is awesome\nI am learning Java\nLine by line', isHidden: false }],
+    hints: [
+      { order: 1, textEn: 'Start with: public class Main { public static void main(String[] args) {', textRu: 'Начните с: public class Main { — потом внутри: public static void main(String[] args) {' },
+      { order: 2, textEn: 'Call System.out.println("Java is awesome"); — one call per line', textRu: 'Напишите System.out.println("Java is awesome"); — каждая строка — отдельный вызов println' },
+      { order: 3, textEn: 'Add two more println calls for the other lines, then close with } }', textRu: 'Добавьте ещё два вызова println для остальных строк, затем закройте } }' },
+    ],
+  })
+
+  await exercise(db, ch1.id, {
+    slug: 'java-print-no-newline', order: 4, xpReward: 25,
+    titleEn: 'Print Without Newline', titleRu: 'Вывод без переноса',
+    contentEn: `# Print Without Newline
+
+Using \`System.out.print()\` (without "ln"), print the following on **one line**:
+
+\`Hello World\`
+
+Use two separate print calls:
+- First: print \`Hello \` (with space, no newline)
+- Second: print \`World\`
+
+This shows the difference between \`print\` and \`println\`.`,
+    contentRu: `# Вывод без переноса строки
+
+С помощью \`System.out.print()\` (без "ln") выведите следующее на **одной строке**:
+
+\`Hello World\`
+
+Используйте два отдельных вызова print:
+- Первый: выведите \`Hello \` (с пробелом, без переноса)
+- Второй: выведите \`World\`
+
+Это показывает разницу между \`print\` и \`println\`.`,
+    instructionsEn: 'Print "Hello World" on one line using two separate System.out.print() calls',
+    instructionsRu: 'Выведите "Hello World" одной строкой, используя два вызова System.out.print()',
+    starterCode: ``,
+    solutionCode: `public class Main {
+    public static void main(String[] args) {
+        System.out.print("Hello ");
+        System.out.print("World");
+    }
+}`,
+    testCases: [{ input: '', expectedOutput: 'Hello World', isHidden: false }],
+    hints: [
+      { order: 1, textEn: 'Declare: public class Main { public static void main(String[] args) {', textRu: 'Объявите класс и метод main как обычно' },
+      { order: 2, textEn: 'Use System.out.print("Hello "); — note: print, NOT println', textRu: 'Используйте System.out.print("Hello "); — обратите внимание: print, а НЕ println' },
+      { order: 3, textEn: 'Then: System.out.print("World"); — no newline after either', textRu: 'Затем: System.out.print("World"); — перенос строки не добавляется' },
+    ],
+  })
+
+  // ─── Chapter 2: Variables ─────────────────────────────────────────────────
   const ch2 = await db.chapter.upsert({
     where: { courseId_slug: { courseId: course.id, slug: 'java-variables-types' } },
     update: {},
@@ -161,240 +228,233 @@ System.out.println("Hello, Java!");
   await theory(db, ch2.id, 'java-variables-theory', 'Variables in Java', 'Переменные в Java', 1, 10, `
 # Variables in Java
 
-Java is **strongly typed** — you must declare a variable's type.
+Java is **strongly typed** — you must say what type each variable is.
 
 ## Primitive Types
 
-| Type | Example | Size |
-|------|---------|------|
-| \`int\` | \`42\` | 32-bit |
-| \`long\` | \`42L\` | 64-bit |
-| \`double\` | \`3.14\` | 64-bit decimal |
-| \`boolean\` | \`true\` | true/false |
-| \`char\` | \`'A'\` | single character |
+| Type | Example | Use for |
+|------|---------|---------|
+| \`int\` | \`42\` | Whole numbers |
+| \`double\` | \`3.14\` | Decimal numbers |
+| \`boolean\` | \`true\` | True/false |
+| \`char\` | \`'A'\` | Single character (single quotes!) |
+| \`String\` | \`"Hello"\` | Text (double quotes) |
 
-## Declaring Variables
+## Declaring and Using Variables
 
 \`\`\`java
 int age = 25;
-double salary = 75000.50;
-boolean isActive = true;
-String name = "Alice";  // String is a class, not a primitive
+double price = 9.99;
+boolean isStudent = true;
+char grade = 'A';
+String name = "Alice";
 \`\`\`
 
-## var (Java 10+)
+## String Concatenation
 
 \`\`\`java
-var name = "Alice";  // inferred as String
-var count = 42;      // inferred as int
+String name = "Alice";
+int age = 25;
+System.out.println("Name: " + name);       // Name: Alice
+System.out.println("Age: " + age);         // Age: 25
+System.out.println(name + " is " + age);   // Alice is 25
 \`\`\`
 
 ## Constants
 
 \`\`\`java
-final double PI = 3.14159;
-final int MAX_USERS = 1000;
+final double PI = 3.14159;  // final = cannot change
+\`\`\`
+
+## Arithmetic
+
+\`\`\`java
+int a = 10, b = 3;
+System.out.println(a + b);   // 13
+System.out.println(a - b);   // 7
+System.out.println(a * b);   // 30
+System.out.println(a / b);   // 3  (integer division!)
+System.out.println(a % b);   // 1  (remainder)
 \`\`\`
   `.trim(), `
 # Переменные в Java
 
-## Переменная — именованная коробка на полке
+В Java вы должны явно указывать тип каждой переменной — в отличие от Python.
 
-Переменная — это как коробка с подписью. В неё кладём значение, обращаемся по имени. Но в Java, в отличие от Python, нужно сказать что за коробка: под числа, под текст, или под логические значения.
+## Основные типы
 
-В Python:
-\`\`\`python
-age = 25
-name = "Дима"
-is_student = True
+| Тип | Пример | Для чего |
+|-----|--------|----------|
+| \`int\` | \`42\` | Целые числа |
+| \`double\` | \`3.14\` | Числа с дробной частью |
+| \`boolean\` | \`true\` | Да/нет (true/false) |
+| \`char\` | \`'A'\` | Один символ (одинарные кавычки!) |
+| \`String\` | \`"Привет"\` | Строка текста (двойные кавычки) |
+
+## Объявление переменных
+
+\`\`\`java
+int age = 25;          // целое число
+double price = 9.99;   // дробное число
+boolean isStudent = true;  // логическое
+char grade = 'A';      // один символ
+String name = "Алиса"; // строка
 \`\`\`
 
-В Java:
+В Python: \`age = 25\` — тип не нужен. В Java: \`int age = 25;\` — тип обязателен!
+
+## Вывод переменных через +
+
 \`\`\`java
+String name = "Алиса";
 int age = 25;
-String name = "Дима";
-boolean isStudent = true;
+System.out.println("Имя: " + name);        // Имя: Алиса
+System.out.println("Возраст: " + age);     // Возраст: 25
+System.out.println(name + " — " + age + " лет");  // Алиса — 25 лет
 \`\`\`
 
-**Зачем указывать тип?** Java компилируется до запуска. Компилятор проверяет типы заранее и ловит ошибки ещё до того как программа запустится. Это делает Java более надёжной для больших проектов.
+Знак \`+\` между строками = склейка (конкатенация).
 
-## Основные типы данных
-
-| Тип Java | Что хранит | Пример | Аналог в Python |
-|----------|-----------|--------|-----------------|
-| \`int\` | Целые числа | \`int age = 25;\` | \`int\` |
-| \`long\` | Большие целые числа | \`long pop = 8000000000L;\` | \`int\` |
-| \`double\` | Дробные числа | \`double pi = 3.14;\` | \`float\` |
-| \`boolean\` | Истина/Ложь | \`boolean ok = true;\` | \`bool\` |
-| \`char\` | Один символ | \`char grade = 'A';\` | нет прямого аналога |
-| \`String\` | Текст | \`String name = "Дима";\` | \`str\` |
-
-**Важно**: \`String\` пишется с заглавной буквы — это не примитивный тип, а полноценный класс. Остальные пишутся строчными.
-
-**Важно**: \`char\` — это один символ в **одинарных** кавычках \`'A'\`. \`String\` — текст в **двойных** кавычках \`"Привет"\`.
-
-## Три способа создать переменную
-
-**Способ 1 — указать тип явно (классический):**
-\`\`\`java
-int score = 100;
-String city = "Москва";
-\`\`\`
-
-**Способ 2 — объявить, потом присвоить:**
-\`\`\`java
-int score;         // объявили
-score = 100;       // потом присвоили
-\`\`\`
-
-**Способ 3 — var (Java 10+, Java угадывает тип):**
-\`\`\`java
-var score = 100;    // Java видит: это int
-var city = "Москва"; // Java видит: это String
-\`\`\`
-
-## Константы — final
+## Арифметика
 
 \`\`\`java
-final double PI = 3.14159;
-final int MAX_USERS = 1000;
+int a = 10, b = 3;
+System.out.println(a + b);   // 13
+System.out.println(a - b);   // 7
+System.out.println(a * b);   // 30
+System.out.println(a / b);   // 3 (целочисленное деление!)
+System.out.println(a % b);   // 1 (остаток от деления)
 \`\`\`
 
-Слово \`final\` означает "нельзя изменить". Если попытаться — ошибка компиляции. В Python по конвенции пишут \`UPPER_CASE\`, но это просто договорённость. В Java \`final\` — жёсткий запрет.
-
-## Склеивание строк
-
-В Java строки склеиваются знаком \`+\`:
-\`\`\`java
-String name = "Дима";
-int age = 25;
-System.out.println("Меня зовут " + name + ", мне " + age + " лет");
-// Меня зовут Дима, мне 25 лет
-\`\`\`
-
-В Python для этого используют f-строки: \`f"Меня зовут {name}"\`. В Java современный аналог — \`String.format("Меня зовут %s", name)\`.
+Важно: \`10 / 3\` в Java = \`3\`, не \`3.33\`! Для дробного результата используйте \`double\`.
   `.trim())
 
   await exercise(db, ch2.id, {
-    slug: 'java-variables-exercise', order: 2, xpReward: 25,
-    titleEn: 'Working with Variables', titleRu: 'Работа с переменными',
-    contentEn: '# Working with Variables\n\nDeclare `String name`, `int age`, `double gpa` with **your own values** and print them using `System.out.println()`.',
-    contentRu: `# Работа с переменными
+    slug: 'java-variables-basic', order: 2, xpReward: 25,
+    titleEn: 'Declare Variables', titleRu: 'Объявление переменных',
+    contentEn: `# Declare Variables
 
-Объяви три переменные с **любыми значениями** и выведи их через \`System.out.println()\`.
+Write a program that:
+1. Creates an \`int\` variable \`age\` with value \`20\`
+2. Creates a \`String\` variable \`name\` with value \`"Java"\`
+3. Prints: \`Name: Java\`
+4. Prints: \`Age: 20\``,
+    contentRu: `# Объявление переменных
 
-Назови переменные именно так и укажи типы:
-- \`String name\` — любое имя в кавычках
-- \`int age\` — любое целое число
-- \`double gpa\` — любое дробное число
-
-В Java нужно указывать тип перед именем. Склейка текста и переменной — через \`+\`:
-\`\`\`java
-String name = "Мария";
-System.out.println("Name: " + name);
-\`\`\`
-
-Формат вывода — любой, главное что значения берутся из переменных.`,
-    instructionsEn: 'Declare String name, int age, double gpa with your own values and print them',
-    instructionsRu: 'Объяви String name, int age, double gpa — любые значения — и выведи через System.out.println()',
-    starterCode: `public class Main {
-    public static void main(String[] args) {
-        // Объяви три переменные (любые значения):
-        String name = "";
-        int age = 0;
-        double gpa = 0.0;
-
-        // Выведи каждую через System.out.println():
-
-    }
-}`,
+Напишите программу которая:
+1. Создаёт переменную \`int\` с именем \`age\` и значением \`20\`
+2. Создаёт переменную \`String\` с именем \`name\` и значением \`"Java"\`
+3. Выводит: \`Name: Java\`
+4. Выводит: \`Age: 20\``,
+    instructionsEn: 'Declare int age=20 and String name="Java", then print them',
+    instructionsRu: 'Объявите int age=20 и String name="Java", затем выведите их',
+    starterCode: ``,
     solutionCode: `public class Main {
     public static void main(String[] args) {
-        String name = "Maria";
         int age = 20;
-        double gpa = 3.85;
+        String name = "Java";
         System.out.println("Name: " + name);
         System.out.println("Age: " + age);
-        System.out.println("GPA: " + gpa);
     }
 }`,
-    testCases: [{ input: '', expectedOutput: '', matchType: 'non_empty', isHidden: false }],
+    testCases: [{ input: '', expectedOutput: 'Name: Java\nAge: 20', isHidden: false }],
     hints: [
-      { order: 1, textEn: 'String name = "Alice"; — type comes before the variable name in Java', textRu: 'String name = "Алиса"; — тип пишется перед именем переменной. String — строка, int — целое, double — дробное' },
-      { order: 2, textEn: 'System.out.println("Name: " + name) — concatenate text and variable with +', textRu: 'System.out.println("Name: " + name) — текст в кавычках и переменная соединяются знаком +' },
+      { order: 1, textEn: 'Write the class and main method first: public class Main { public static void main(String[] args) {', textRu: 'Сначала напишите класс и main: public class Main { public static void main(String[] args) {' },
+      { order: 2, textEn: 'Declare int: int age = 20; — the type comes first, then the name', textRu: 'Объявите int: int age = 20; — сначала тип, потом имя переменной' },
+      { order: 3, textEn: 'Declare String: String name = "Java"; — String with capital S, double quotes', textRu: 'Объявите String: String name = "Java"; — String с большой буквы, двойные кавычки' },
+      { order: 4, textEn: 'Print: System.out.println("Name: " + name); — the + joins the text and the variable', textRu: 'Выведите: System.out.println("Name: " + name); — знак + склеивает текст и переменную' },
     ],
   })
 
-  // ─── Chapter 3 ────────────────────────────────────────────────────────────
+  await exercise(db, ch2.id, {
+    slug: 'java-arithmetic', order: 3, xpReward: 25,
+    titleEn: 'Simple Calculator', titleRu: 'Простой калькулятор',
+    contentEn: `# Simple Calculator
+
+Write a program that:
+1. Creates \`int a = 15\` and \`int b = 4\`
+2. Prints the sum: \`Sum: 19\`
+3. Prints the product: \`Product: 60\`
+4. Prints the remainder: \`Remainder: 3\`
+
+Use \`+\`, \`*\`, \`%\` operators.`,
+    contentRu: `# Простой калькулятор
+
+Напишите программу которая:
+1. Создаёт \`int a = 15\` и \`int b = 4\`
+2. Выводит сумму: \`Sum: 19\`
+3. Выводит произведение: \`Product: 60\`
+4. Выводит остаток: \`Remainder: 3\`
+
+Используйте операторы \`+\`, \`*\`, \`%\`.`,
+    instructionsEn: 'Print Sum: 19, Product: 60, Remainder: 3 using a=15, b=4',
+    instructionsRu: 'Выведите Sum: 19, Product: 60, Remainder: 3 используя a=15, b=4',
+    starterCode: ``,
+    solutionCode: `public class Main {
+    public static void main(String[] args) {
+        int a = 15;
+        int b = 4;
+        System.out.println("Sum: " + (a + b));
+        System.out.println("Product: " + (a * b));
+        System.out.println("Remainder: " + (a % b));
+    }
+}`,
+    testCases: [{ input: '', expectedOutput: 'Sum: 19\nProduct: 60\nRemainder: 3', isHidden: false }],
+    hints: [
+      { order: 1, textEn: 'Declare: int a = 15; and int b = 4; inside main', textRu: 'Объявите: int a = 15; и int b = 4; внутри main' },
+      { order: 2, textEn: 'For sum: System.out.println("Sum: " + (a + b)); — wrap arithmetic in parentheses', textRu: 'Для суммы: System.out.println("Sum: " + (a + b)); — арифметику в скобки' },
+      { order: 3, textEn: 'Product uses *: System.out.println("Product: " + (a * b));', textRu: 'Произведение через *: System.out.println("Product: " + (a * b));' },
+      { order: 4, textEn: 'Remainder uses %: System.out.println("Remainder: " + (a % b));', textRu: 'Остаток через %: System.out.println("Remainder: " + (a % b));' },
+    ],
+  })
+
+  await exercise(db, ch2.id, {
+    slug: 'java-string-ops', order: 4, xpReward: 30,
+    titleEn: 'String Operations', titleRu: 'Операции со строками',
+    contentEn: `# String Operations
+
+Write a program that:
+1. Declares \`String word = "Hello"\`
+2. Prints the length: \`Length: 5\` — use \`word.length()\`
+3. Prints in upper case: \`Upper: HELLO\` — use \`word.toUpperCase()\`
+4. Prints in lower case: \`Lower: hello\` — use \`word.toLowerCase()\``,
+    contentRu: `# Операции со строками
+
+Напишите программу которая:
+1. Объявляет \`String word = "Hello"\`
+2. Выводит длину: \`Length: 5\` — используйте \`word.length()\`
+3. Выводит в верхнем регистре: \`Upper: HELLO\` — используйте \`word.toUpperCase()\`
+4. Выводит в нижнем регистре: \`Lower: hello\` — используйте \`word.toLowerCase()\``,
+    instructionsEn: 'Print length, toUpperCase, toLowerCase for the word "Hello"',
+    instructionsRu: 'Выведите длину, верхний и нижний регистр для слова "Hello"',
+    starterCode: ``,
+    solutionCode: `public class Main {
+    public static void main(String[] args) {
+        String word = "Hello";
+        System.out.println("Length: " + word.length());
+        System.out.println("Upper: " + word.toUpperCase());
+        System.out.println("Lower: " + word.toLowerCase());
+    }
+}`,
+    testCases: [{ input: '', expectedOutput: 'Length: 5\nUpper: HELLO\nLower: hello', isHidden: false }],
+    hints: [
+      { order: 1, textEn: 'Declare: String word = "Hello"; — capital S in String', textRu: 'Объявите: String word = "Hello"; — String с заглавной буквы' },
+      { order: 2, textEn: 'word.length() returns the number of characters: System.out.println("Length: " + word.length());', textRu: 'word.length() возвращает количество символов: System.out.println("Length: " + word.length());' },
+      { order: 3, textEn: 'word.toUpperCase() returns "HELLO": System.out.println("Upper: " + word.toUpperCase());', textRu: 'word.toUpperCase() возвращает "HELLO": System.out.println("Upper: " + word.toUpperCase());' },
+    ],
+  })
+
+  // ─── Chapter 3: Control Flow ──────────────────────────────────────────────
   const ch3 = await db.chapter.upsert({
     where: { courseId_slug: { courseId: course.id, slug: 'java-control-flow' } },
     update: {},
     create: { courseId: course.id, slug: 'java-control-flow', order: 3, titleEn: 'Control Flow', titleRu: 'Управление потоком' },
   })
 
-  await theory(db, ch3.id, 'java-control-theory', 'If, Switch, and Loops', 'If, Switch и циклы', 1, 10, `
+  await theory(db, ch3.id, 'java-control-flow-theory', 'Control Flow', 'Управление потоком', 1, 10, `
 # Control Flow in Java
 
-## If / Else
-
-\`\`\`java
-int score = 85;
-if (score >= 90)      System.out.println("A");
-else if (score >= 80) System.out.println("B");
-else                   System.out.println("F");
-\`\`\`
-
-## Ternary
-
-\`\`\`java
-String result = score >= 60 ? "Pass" : "Fail";
-\`\`\`
-
-## Switch Expression (Java 14+)
-
-\`\`\`java
-String type = switch (day) {
-    case "SATURDAY", "SUNDAY" -> "Weekend";
-    default                   -> "Weekday";
-};
-\`\`\`
-
-## For Loop
-
-\`\`\`java
-for (int i = 0; i < 5; i++) {
-    System.out.println(i);
-}
-\`\`\`
-
-## For-Each
-
-\`\`\`java
-int[] numbers = {10, 20, 30};
-for (int num : numbers) {
-    System.out.println(num);
-}
-\`\`\`
-  `.trim(), `
-# Управление потоком в Java
-
-## If / Else — принятие решений
-
-В Python:
-\`\`\`python
-score = 85
-if score >= 90:
-    print("A")
-elif score >= 80:
-    print("B")
-else:
-    print("F")
-\`\`\`
-
-В Java то же самое, но:
-- Условие в **круглых скобках** обязательно: \`if (score >= 90)\`
-- Вместо двоеточия — **фигурные скобки** \`{ }\`
-- \`elif\` → \`else if\` (два слова)
+## If / Else If / Else
 
 \`\`\`java
 int score = 85;
@@ -407,22 +467,66 @@ if (score >= 90) {
 }
 \`\`\`
 
-## Тернарный оператор — краткое if/else
+Key differences from Python:
+- Condition must be in **parentheses**: \`if (score >= 90)\`
+- Use **curly braces** \`{}\` not indentation
+- \`elif\` → \`else if\` (two words)
 
-Когда нужно выбрать одно из двух значений:
+## For Loop
+
 \`\`\`java
-String result = score >= 60 ? "Сдал" : "Не сдал";
-// читается: если score >= 60, то "Сдал", иначе "Не сдал"
+// Print 0 to 4
+for (int i = 0; i < 5; i++) {
+    System.out.println(i);
+}
 \`\`\`
 
-В Python аналог: \`result = "Сдал" if score >= 60 else "Не сдал"\`
+Three parts: **init** | **condition** | **step**
 
-## Цикл for — повторяем действия
+## While Loop
 
-**Классический for:**
 \`\`\`java
+int n = 1;
+while (n <= 5) {
+    System.out.println(n);
+    n++;  // n++ means n = n + 1
+}
+\`\`\`
+
+## Comparison Operators
+
+\`==\` \`!=\` \`<\` \`>\` \`<=\` \`>=\`
+
+## Logical Operators
+
+\`&&\` (and) · \`||\` (or) · \`!\` (not)
+  `.trim(), `
+# Управление потоком в Java
+
+## If / Else If / Else
+
+\`\`\`java
+int score = 85;
+if (score >= 90) {
+    System.out.println("Отлично");
+} else if (score >= 70) {
+    System.out.println("Хорошо");
+} else {
+    System.out.println("Нужно подтянуться");
+}
+\`\`\`
+
+Отличия от Python:
+- Условие в **круглых скобках**: \`if (score >= 90)\`
+- Вместо двоеточия — **фигурные скобки** \`{}\`
+- \`elif\` → \`else if\` (два слова)
+
+## Цикл for
+
+\`\`\`java
+// Выводим числа от 0 до 4
 for (int i = 0; i < 5; i++) {
-    System.out.println(i);  // выведет 0, 1, 2, 3, 4
+    System.out.println(i);
 }
 \`\`\`
 
@@ -430,319 +534,385 @@ for (int i = 0; i < 5; i++) {
 
 В Python: \`for i in range(5): print(i)\`
 
-**For-each** (как \`for item in list\` в Python):
-\`\`\`java
-int[] numbers = {10, 20, 30};
-for (int num : numbers) {
-    System.out.println(num);  // выведет 10, 20, 30
-}
-\`\`\`
-
-Читается: "для каждого \`num\` из \`numbers\`".
-
-## While — пока условие верно
+## Цикл while
 
 \`\`\`java
 int n = 1;
-while (n < 100) {
-    n *= 2;  // умножить n на 2
-}
-System.out.println(n);  // 128
-\`\`\`
-
-В Python: \`while n < 100: n *= 2\`
-
-## Switch — быстрый выбор из вариантов
-
-\`\`\`java
-String day = "Суббота";
-switch (day) {
-    case "Суббота":
-    case "Воскресенье":
-        System.out.println("Выходной");
-        break;
-    default:
-        System.out.println("Рабочий день");
-        break;
+while (n <= 5) {
+    System.out.println(n);
+    n++;  // n++ это то же самое что n = n + 1
 }
 \`\`\`
 
-**Важно**: в Java нужен \`break\` после каждого варианта! Без него выполнение "проваливается" дальше.
+## Операторы сравнения и логики
 
-В Java 14+ появился новый синтаксис без \`break\`:
-\`\`\`java
-String type = switch (day) {
-    case "Суббота", "Воскресенье" -> "Выходной";
-    default -> "Рабочий день";
-};
-\`\`\`
+\`==\` \`!=\` \`<\` \`>\` \`<=\` \`>=\`
+
+\`&&\` (и) · \`||\` (или) · \`!\` (не)
   `.trim())
 
   await exercise(db, ch3.id, {
-    slug: 'java-fizzbuzz', order: 2, xpReward: 30,
-    titleEn: 'FizzBuzz in Java', titleRu: 'FizzBuzz на Java',
-    contentEn: '# FizzBuzz in Java\n\nPrint 1 to 20. Multiples of 3 → `Fizz`, multiples of 5 → `Buzz`, both → `FizzBuzz`.',
-    contentRu: `# FizzBuzz на Java
+    slug: 'java-if-grade', order: 2, xpReward: 30,
+    titleEn: 'Grade Checker', titleRu: 'Оценщик',
+    contentEn: `# Grade Checker
 
-Выведите числа от 1 до 20, но:
-- Кратные 3 → напишите \`Fizz\`
-- Кратные 5 → \`Buzz\`
-- Кратные и 3 и 5 → \`FizzBuzz\`
+Write a program with \`int score = 75\` that prints the grade:
+- 90 and above → \`Grade: A\`
+- 75 and above → \`Grade: B\`
+- 60 and above → \`Grade: C\`
+- Below 60 → \`Grade: F\`
 
-В Python:
-\`\`\`python
-for i in range(1, 21):
-    if i % 15 == 0:
-        print("FizzBuzz")
-    elif i % 3 == 0:
-        print("Fizz")
-    elif i % 5 == 0:
-        print("Buzz")
-    else:
-        print(i)
-\`\`\`
+With score = 75, it should print: \`Grade: B\``,
+    contentRu: `# Оценщик
 
-В Java структура цикла уже написана — добавьте логику внутри.
+Напишите программу с \`int score = 75\`, которая выводит оценку:
+- 90 и выше → \`Grade: A\`
+- 75 и выше → \`Grade: B\`
+- 60 и выше → \`Grade: C\`
+- Ниже 60 → \`Grade: F\`
 
-**Знак \`%\`** — остаток от деления. \`i % 3 == 0\` значит число делится на 3 без остатка.`,
-    instructionsEn: 'Use a for loop and if/else to implement FizzBuzz for 1-20',
-    instructionsRu: 'Добавьте if/else внутри цикла — сначала проверяйте i % 15 == 0',
-    starterCode: `public class Main {
-    public static void main(String[] args) {
-        for (int i = 1; i <= 20; i++) {
-            // Ваша логика FizzBuzz здесь
-            // Подсказка: сначала проверьте i % 15 == 0
-        }
-    }
-}`,
+При score = 75 должно выводить: \`Grade: B\``,
+    instructionsEn: 'Print "Grade: B" for score=75 using if/else if/else',
+    instructionsRu: 'Выведите "Grade: B" для score=75 используя if/else if/else',
+    starterCode: ``,
     solutionCode: `public class Main {
     public static void main(String[] args) {
-        for (int i = 1; i <= 20; i++) {
-            if (i % 15 == 0)      System.out.println("FizzBuzz");
-            else if (i % 3 == 0)  System.out.println("Fizz");
-            else if (i % 5 == 0)  System.out.println("Buzz");
-            else                   System.out.println(i);
+        int score = 75;
+        if (score >= 90) {
+            System.out.println("Grade: A");
+        } else if (score >= 75) {
+            System.out.println("Grade: B");
+        } else if (score >= 60) {
+            System.out.println("Grade: C");
+        } else {
+            System.out.println("Grade: F");
         }
     }
 }`,
-    testCases: [{ input: '', expectedOutput: '1\n2\nFizz\n4\nBuzz\nFizz\n7\n8\nFizz\nBuzz\n11\nFizz\n13\n14\nFizzBuzz\n16\n17\nFizz\n19\nBuzz', isHidden: false }],
+    testCases: [{ input: '', expectedOutput: 'Grade: B', isHidden: false }],
     hints: [
-      { order: 1, textEn: 'Check i % 15 == 0 first (divisible by both 3 and 5)', textRu: 'Сначала проверяйте i % 15 == 0 — иначе FizzBuzz никогда не сработает' },
-      { order: 2, textEn: 'Then check i % 3 == 0, then i % 5 == 0', textRu: 'Числа: System.out.println(i) без кавычек. Текст: System.out.println("Fizz") в кавычках' },
+      { order: 1, textEn: 'Write class Main and main method, then declare: int score = 75;', textRu: 'Напишите класс Main и метод main, затем: int score = 75;' },
+      { order: 2, textEn: 'Start with: if (score >= 90) { System.out.println("Grade: A"); }', textRu: 'Начните с: if (score >= 90) { System.out.println("Grade: A"); }' },
+      { order: 3, textEn: 'Add: } else if (score >= 75) { System.out.println("Grade: B"); }', textRu: 'Добавьте: } else if (score >= 75) { System.out.println("Grade: B"); }' },
+      { order: 4, textEn: 'Continue with else if (score >= 60) for C, then else for F', textRu: 'Продолжите с else if (score >= 60) для C, затем else для F' },
     ],
   })
 
-  // ─── Chapter 4 ────────────────────────────────────────────────────────────
-  const ch4 = await db.chapter.upsert({
-    where: { courseId_slug: { courseId: course.id, slug: 'java-methods-oop' } },
-    update: {},
-    create: { courseId: course.id, slug: 'java-methods-oop', order: 4, titleEn: 'Methods and OOP Basics', titleRu: 'Методы и основы ООП' },
+  await exercise(db, ch3.id, {
+    slug: 'java-for-loop', order: 3, xpReward: 30,
+    titleEn: 'Count to 5', titleRu: 'Считаем до 5',
+    contentEn: `# Count to 5
+
+Write a program using a \`for\` loop that prints numbers 1 through 5, each on its own line:
+\`\`\`
+1
+2
+3
+4
+5
+\`\`\`
+
+Hint: start \`i\` at 1, go while \`i <= 5\`, increment with \`i++\``,
+    contentRu: `# Считаем до 5
+
+Напишите программу с циклом \`for\` которая выводит числа от 1 до 5, каждое на отдельной строке:
+\`\`\`
+1
+2
+3
+4
+5
+\`\`\`
+
+Подсказка: начните \`i\` с 1, условие \`i <= 5\`, шаг \`i++\``,
+    instructionsEn: 'Print numbers 1 to 5 using a for loop',
+    instructionsRu: 'Выведите числа от 1 до 5 используя цикл for',
+    starterCode: ``,
+    solutionCode: `public class Main {
+    public static void main(String[] args) {
+        for (int i = 1; i <= 5; i++) {
+            System.out.println(i);
+        }
+    }
+}`,
+    testCases: [{ input: '', expectedOutput: '1\n2\n3\n4\n5', isHidden: false }],
+    hints: [
+      { order: 1, textEn: 'Write the class and main method first', textRu: 'Сначала напишите класс Main и метод main' },
+      { order: 2, textEn: 'The for loop structure: for (int i = 1; i <= 5; i++) {', textRu: 'Структура цикла: for (int i = 1; i <= 5; i++) {' },
+      { order: 3, textEn: 'Inside the loop: System.out.println(i); — this prints the current value of i', textRu: 'Внутри цикла: System.out.println(i); — это выводит текущее значение i' },
+      { order: 4, textEn: 'Close the loop with } and close main and class with } }', textRu: 'Закройте цикл }, затем main и класс } }' },
+    ],
   })
 
-  await theory(db, ch4.id, 'java-methods-theory', 'Methods and Classes', 'Методы и классы', 1, 10, `
-# Methods and Classes in Java
+  await exercise(db, ch3.id, {
+    slug: 'java-sum-loop', order: 4, xpReward: 35,
+    titleEn: 'Sum 1 to 10', titleRu: 'Сумма от 1 до 10',
+    contentEn: `# Sum 1 to 10
 
-## Methods
+Write a program that uses a \`for\` loop to calculate and print the sum of numbers from 1 to 10.
+
+Output: \`Sum: 55\`
+
+Steps:
+1. Create \`int sum = 0\` before the loop
+2. Loop from 1 to 10, adding each number to \`sum\`
+3. After the loop, print the result`,
+    contentRu: `# Сумма от 1 до 10
+
+Напишите программу которая использует цикл \`for\` для вычисления суммы чисел от 1 до 10.
+
+Вывод: \`Sum: 55\`
+
+Шаги:
+1. Создайте \`int sum = 0\` перед циклом
+2. В цикле от 1 до 10 прибавляйте каждое число к \`sum\`
+3. После цикла выведите результат`,
+    instructionsEn: 'Calculate and print Sum: 55 (sum of 1 to 10) using a for loop',
+    instructionsRu: 'Вычислите и выведите Sum: 55 (сумму от 1 до 10) используя цикл for',
+    starterCode: ``,
+    solutionCode: `public class Main {
+    public static void main(String[] args) {
+        int sum = 0;
+        for (int i = 1; i <= 10; i++) {
+            sum = sum + i;
+        }
+        System.out.println("Sum: " + sum);
+    }
+}`,
+    testCases: [{ input: '', expectedOutput: 'Sum: 55', isHidden: false }],
+    hints: [
+      { order: 1, textEn: 'Declare int sum = 0; before the loop — this will accumulate the total', textRu: 'Объявите int sum = 0; перед циклом — в ней будем накапливать сумму' },
+      { order: 2, textEn: 'Write: for (int i = 1; i <= 10; i++) {', textRu: 'Напишите: for (int i = 1; i <= 10; i++) {' },
+      { order: 3, textEn: 'Inside the loop: sum = sum + i; (or shorter: sum += i;)', textRu: 'Внутри цикла: sum = sum + i; (или короче: sum += i;)' },
+      { order: 4, textEn: 'After the loop (outside the }), print: System.out.println("Sum: " + sum);', textRu: 'После цикла (снаружи }): System.out.println("Sum: " + sum);' },
+    ],
+  })
+
+  // ─── Chapter 4: Methods ───────────────────────────────────────────────────
+  const ch4 = await db.chapter.upsert({
+    where: { courseId_slug: { courseId: course.id, slug: 'java-methods' } },
+    update: {},
+    create: { courseId: course.id, slug: 'java-methods', order: 4, titleEn: 'Methods', titleRu: 'Методы' },
+  })
+
+  await theory(db, ch4.id, 'java-methods-theory', 'Methods in Java', 'Методы в Java', 1, 10, `
+# Methods in Java
+
+A method is a reusable block of code. In Java, all methods live inside a class.
+
+## Void Method (no return value)
 
 \`\`\`java
-public static int add(int a, int b) {
+public class Main {
+    static void greet(String name) {
+        System.out.println("Hello, " + name + "!");
+    }
+
+    public static void main(String[] args) {
+        greet("Alice");  // Hello, Alice!
+        greet("Bob");    // Hello, Bob!
+    }
+}
+\`\`\`
+
+## Method That Returns a Value
+
+\`\`\`java
+static int add(int a, int b) {
     return a + b;
 }
-int result = add(3, 4); // 7
+
+// Usage:
+int result = add(3, 5);  // result = 8
+System.out.println(result);
 \`\`\`
 
-## Classes
+## Method Anatomy
 
-\`\`\`java
-public class Car {
-    String brand;
-    int year;
-
-    public Car(String brand, int year) {
-        this.brand = brand;
-        this.year = year;
-    }
-
-    public String getInfo() {
-        return brand + " (" + year + ")";
-    }
-}
-
-Car tesla = new Car("Tesla", 2024);
-System.out.println(tesla.getInfo()); // Tesla (2024)
+\`\`\`
+static  int     add  (int a, int b)
+------  ---     ---  --------------
+access  return  name  parameters
+        type
 \`\`\`
 
-## 4 Pillars of OOP
-
-1. **Encapsulation** — hide internal state, expose methods
-2. **Inheritance** — child classes extend parent classes
-3. **Polymorphism** — one interface, multiple implementations
-4. **Abstraction** — work with concepts, not details
+- \`static\` — belongs to the class (required to call from main)
+- Return type: \`void\` means nothing returned, \`int\` means returns an int
+- Parameters go in parentheses
   `.trim(), `
-# Методы и классы в Java
+# Методы в Java
 
-## Методы — готовые рецепты
+Метод — это именованный блок кода который можно вызывать многократно. В Java все методы живут внутри класса.
 
-Метод — это именованный блок кода который можно вызывать много раз. Как рецепт: написал один раз, используй сколько угодно.
+## Метод без возвращаемого значения (void)
 
-В Python:
-\`\`\`python
-def add(a, b):
-    return a + b
+\`\`\`java
+public class Main {
+    static void greet(String name) {
+        System.out.println("Привет, " + name + "!");
+    }
+
+    public static void main(String[] args) {
+        greet("Алиса");  // Привет, Алиса!
+        greet("Боб");    // Привет, Боб!
+    }
+}
 \`\`\`
 
-В Java:
+## Метод который возвращает значение
+
 \`\`\`java
-public static int add(int a, int b) {
+static int add(int a, int b) {
     return a + b;
 }
+
+// Использование:
+int result = add(3, 5);  // result = 8
+System.out.println(result);
 \`\`\`
 
-Разбираем слово за словом:
-- \`public\` — метод доступен снаружи
-- \`static\` — принадлежит классу, не объекту (пока просто запомните)
-- \`int\` — этот метод вернёт целое число
-- \`add\` — имя метода
-- \`int a, int b\` — два аргумента, оба целые числа
+## Анатомия метода
 
-Если метод ничего не возвращает — пишем \`void\` вместо типа:
-\`\`\`java
-public static void greet(String name) {
-    System.out.println("Привет, " + name + "!");
-    // нет return — ничего не возвращаем
-}
+\`\`\`
+static  int     add  (int a, int b)
+------  ---     ---  --------------
+доступ  тип     имя   параметры
+        возвр.
 \`\`\`
 
-## Классы — чертежи для объектов
+- \`static\` — метод принадлежит классу (нужно для вызова из main)
+- Тип возврата: \`void\` = ничего не возвращает, \`int\` = возвращает число
+- Параметры идут в скобках
+- \`return\` возвращает значение из метода
 
-В Python:
-\`\`\`python
-class Car:
-    def __init__(self, brand, year):
-        self.brand = brand
-        self.year = year
-
-    def get_info(self):
-        return f"{self.brand} ({self.year})"
-\`\`\`
-
-В Java:
-\`\`\`java
-public class Car {
-    String brand;  // поля (данные)
-    int year;
-
-    public Car(String brand, int year) {  // конструктор
-        this.brand = brand;  // this = текущий объект
-        this.year = year;
-    }
-
-    public String getInfo() {  // метод
-        return brand + " (" + year + ")";
-    }
-}
-\`\`\`
-
-**\`this\`** — ключевое слово означающее "этот объект". \`this.brand\` — это поле \`brand\` данного объекта. Нужно чтобы отличить поле объекта от аргумента метода с тем же именем.
-
-Создаём объект и используем:
-\`\`\`java
-Car tesla = new Car("Tesla", 2024);
-System.out.println(tesla.getInfo()); // Tesla (2024)
-\`\`\`
-
-**\`new\`** — создаёт новый объект в памяти. В Python \`Car("Tesla", 2024)\`, в Java нужно явно написать \`new\`.
-
-## 4 принципа ООП — кратко
-
-1. **Инкапсуляция** — скрывать внутренние детали. Как банкомат: вы нажимаете кнопки, не зная как он работает внутри.
-2. **Наследование** — дочерний класс расширяет родительский. Электромобиль наследует всё от Автомобиль и добавляет батарею.
-3. **Полиморфизм** — один интерфейс, разные реализации. Метод \`speak()\` у Кошки мяукает, у Собаки лает.
-4. **Абстракция** — работать с концепцией, не деталями. Вы знаете что машина едет, не зная как работает двигатель.
+В Python это был бы просто: \`def add(a, b): return a + b\`
   `.trim())
 
   await exercise(db, ch4.id, {
-    slug: 'java-class-exercise', order: 2, xpReward: 40,
-    titleEn: 'Create a Rectangle Class', titleRu: 'Создайте класс Rectangle',
-    contentEn: '# Rectangle Class\n\nCreate `Rectangle` with `width`, `height`, `area()` (w×h), and `perimeter()` (2×(w+h)).\n\nExpected output:\n```\nArea: 15.0\nPerimeter: 16.0\n```',
-    contentRu: `# Класс Rectangle
+    slug: 'java-method-greet', order: 2, xpReward: 35,
+    titleEn: 'Greeting Method', titleRu: 'Метод приветствия',
+    contentEn: `# Greeting Method
 
-Создайте класс \`Rectangle\` (прямоугольник) с:
-- Полями \`width\` (ширина) и \`height\` (высота)
-- Методом \`area()\` — площадь = ширина × высота
-- Методом \`perimeter()\` — периметр = 2 × (ширина + высота)
+Write a program with a static method \`greet\` that:
+- Takes a \`String name\` parameter
+- Prints: \`Hello, [name]!\`
 
-В Python это выглядело бы так:
-\`\`\`python
-class Rectangle:
-    def __init__(self, width, height):
-        self.width = width
-        self.height = height
+Call it from main with \`"World"\` so it prints:
+\`Hello, World!\``,
+    contentRu: `# Метод приветствия
 
-    def area(self):
-        return self.width * self.height
+Напишите программу со статическим методом \`greet\` который:
+- Принимает параметр \`String name\`
+- Выводит: \`Hello, [name]!\`
 
-    def perimeter(self):
-        return 2 * (self.width + self.height)
-\`\`\`
-
-В Java класс уже объявлен — заполните конструктор и методы.
-
-Ожидаемый вывод:
-\`\`\`
-Area: 15.0
-Perimeter: 16.0
-\`\`\``,
-    instructionsEn: 'Implement a Rectangle class with area() and perimeter() methods',
-    instructionsRu: 'Заполните конструктор (this.width = width) и реализуйте area() и perimeter()',
-    starterCode: `public class Main {
-    static class Rectangle {
-        double width;
-        double height;
-
-        Rectangle(double width, double height) {
-            // Сохраните width и height через this.width = width
-        }
-
-        double area() {
-            return 0; // Замените на: width * height
-        }
-
-        double perimeter() {
-            return 0; // Замените на: 2 * (width + height)
-        }
-    }
-
-    public static void main(String[] args) {
-        Rectangle rect = new Rectangle(5.0, 3.0);
-        System.out.println("Area: " + rect.area());
-        System.out.println("Perimeter: " + rect.perimeter());
-    }
-}`,
+Вызовите его из main с \`"World"\` чтобы вывелось:
+\`Hello, World!\``,
+    instructionsEn: 'Define method greet(String name) that prints "Hello, [name]!" and call it with "World"',
+    instructionsRu: 'Определите метод greet(String name) и вызовите его с "World"',
+    starterCode: ``,
     solutionCode: `public class Main {
-    static class Rectangle {
-        double width;
-        double height;
-
-        Rectangle(double width, double height) {
-            this.width = width;
-            this.height = height;
-        }
-
-        double area() { return width * height; }
-        double perimeter() { return 2 * (width + height); }
+    static void greet(String name) {
+        System.out.println("Hello, " + name + "!");
     }
 
     public static void main(String[] args) {
-        Rectangle rect = new Rectangle(5.0, 3.0);
-        System.out.println("Area: " + rect.area());
-        System.out.println("Perimeter: " + rect.perimeter());
+        greet("World");
     }
 }`,
-    testCases: [{ input: '', expectedOutput: 'Area: 15.0\nPerimeter: 16.0', isHidden: false }],
+    testCases: [{ input: '', expectedOutput: 'Hello, World!', isHidden: false }],
     hints: [
-      { order: 1, textEn: 'In the constructor: this.width = width; this.height = height;', textRu: 'В конструкторе: this.width = width; this.height = height; — this нужен чтобы отличить поле от аргумента' },
-      { order: 2, textEn: 'area() returns width * height, perimeter() returns 2 * (width + height)', textRu: 'area() — return width * height; перimeter() — return 2 * (width + height);' },
+      { order: 1, textEn: 'Start with public class Main { — methods go inside the class, alongside main', textRu: 'Начните с public class Main { — методы идут внутри класса, рядом с main' },
+      { order: 2, textEn: 'Define the method before main: static void greet(String name) {', textRu: 'Определите метод перед main: static void greet(String name) {' },
+      { order: 3, textEn: 'Inside greet: System.out.println("Hello, " + name + "!");', textRu: 'Внутри greet: System.out.println("Hello, " + name + "!");' },
+      { order: 4, textEn: 'In main, call the method: greet("World"); — just the method name with argument', textRu: 'В main вызовите метод: greet("World"); — имя метода и аргумент в скобках' },
+    ],
+  })
+
+  await exercise(db, ch4.id, {
+    slug: 'java-method-multiply', order: 3, xpReward: 35,
+    titleEn: 'Multiply Method', titleRu: 'Метод умножения',
+    contentEn: `# Multiply Method
+
+Write a method \`multiply\` that:
+- Takes two \`int\` parameters: \`a\` and \`b\`
+- Returns their product (type \`int\`)
+
+In main, call \`multiply(6, 7)\` and print the result:
+\`Result: 42\``,
+    contentRu: `# Метод умножения
+
+Напишите метод \`multiply\` который:
+- Принимает два параметра \`int\`: \`a\` и \`b\`
+- Возвращает их произведение (тип \`int\`)
+
+В main вызовите \`multiply(6, 7)\` и выведите результат:
+\`Result: 42\``,
+    instructionsEn: 'Define int multiply(int a, int b) that returns a*b, print "Result: 42"',
+    instructionsRu: 'Определите int multiply(int a, int b) возвращающий a*b, выведите "Result: 42"',
+    starterCode: ``,
+    solutionCode: `public class Main {
+    static int multiply(int a, int b) {
+        return a * b;
+    }
+
+    public static void main(String[] args) {
+        int result = multiply(6, 7);
+        System.out.println("Result: " + result);
+    }
+}`,
+    testCases: [{ input: '', expectedOutput: 'Result: 42', isHidden: false }],
+    hints: [
+      { order: 1, textEn: 'Define the method: static int multiply(int a, int b) { — "int" before the name means it returns an int', textRu: 'Определите метод: static int multiply(int a, int b) { — "int" перед именем означает что возвращает число' },
+      { order: 2, textEn: 'Inside multiply: return a * b; — return sends the value back to the caller', textRu: 'Внутри multiply: return a * b; — return возвращает значение вызывающему' },
+      { order: 3, textEn: 'In main: int result = multiply(6, 7); — store the returned value in a variable', textRu: 'В main: int result = multiply(6, 7); — сохраните возвращённое значение в переменную' },
+      { order: 4, textEn: 'Print: System.out.println("Result: " + result);', textRu: 'Выведите: System.out.println("Result: " + result);' },
+    ],
+  })
+
+  await exercise(db, ch4.id, {
+    slug: 'java-method-max', order: 4, xpReward: 40,
+    titleEn: 'Find Maximum', titleRu: 'Найти максимум',
+    contentEn: `# Find Maximum
+
+Write a method \`max\` that:
+- Takes two \`int\` parameters: \`a\` and \`b\`
+- Returns the larger one
+
+In main, call \`max(12, 7)\` and print:
+\`Max: 12\`
+
+Use an \`if/else\` inside the method to decide which to return.`,
+    contentRu: `# Найти максимум
+
+Напишите метод \`max\` который:
+- Принимает два параметра \`int\`: \`a\` и \`b\`
+- Возвращает наибольший из них
+
+В main вызовите \`max(12, 7)\` и выведите:
+\`Max: 12\`
+
+Используйте \`if/else\` внутри метода чтобы решить что возвращать.`,
+    instructionsEn: 'Write int max(int a, int b) returning the larger value, print "Max: 12"',
+    instructionsRu: 'Напишите int max(int a, int b) возвращающий большее значение, выведите "Max: 12"',
+    starterCode: ``,
+    solutionCode: `public class Main {
+    static int max(int a, int b) {
+        if (a > b) {
+            return a;
+        } else {
+            return b;
+        }
+    }
+
+    public static void main(String[] args) {
+        System.out.println("Max: " + max(12, 7));
+    }
+}`,
+    testCases: [{ input: '', expectedOutput: 'Max: 12', isHidden: false }],
+    hints: [
+      { order: 1, textEn: 'Define: static int max(int a, int b) { — returns int', textRu: 'Определите: static int max(int a, int b) { — возвращает int' },
+      { order: 2, textEn: 'Inside, use if (a > b) { return a; } else { return b; }', textRu: 'Внутри используйте if (a > b) { return a; } else { return b; }' },
+      { order: 3, textEn: 'In main: System.out.println("Max: " + max(12, 7));', textRu: 'В main: System.out.println("Max: " + max(12, 7));' },
     ],
   })
 
